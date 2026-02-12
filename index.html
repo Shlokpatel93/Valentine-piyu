@@ -98,13 +98,6 @@ img {
     margin-top: 20px;
     max-width: 90%;
 }
-
-#loveLetter {
-    font-size: 18px;
-    padding: 20px;
-    max-width: 600px;
-    margin: auto;
-}
 </style>
 </head>
 
@@ -143,7 +136,7 @@ img {
 <div id="lovePage" class="hidden container">
     <h1>She Said YESSSS ❤️🔥</h1>
     <img src="your-photo.jpg">
-    <div id="loveLetter">
+    <div style="font-size:18px;max-width:600px;margin:auto;">
         Piyu ❤️<br><br>
         I promise to love you more every single day.<br>
         You are my happiness, my peace, my forever.<br><br>
@@ -153,7 +146,6 @@ img {
 
 <script>
 
-// PASSWORD CHECK
 function checkPassword() {
     const password = document.getElementById("passwordInput").value;
     if(password.toLowerCase() === "piyu") {
@@ -164,7 +156,6 @@ function checkPassword() {
     }
 }
 
-// COUNTDOWN
 function updateCountdown() {
     const valentine = new Date("Feb 14, 2026 00:00:00").getTime();
     const now = new Date().getTime();
@@ -179,12 +170,37 @@ function updateCountdown() {
 }
 setInterval(updateCountdown, 1000);
 
-// BUTTON LOGIC
 let noCount = 0;
 const yesBtn = document.getElementById("yesBtn");
 const noBtn = document.getElementById("noBtn");
 const message = document.getElementById("message");
 const memoryImage = document.getElementById("memoryImage");
+
+const photos = [
+    "image1.jpg",
+    "image2.jpg",
+    "image3.jpg",
+    "image4.jpg",
+    "image5.jpg",
+    "image6.jpg",
+    "image7.jpg",
+    "image8.jpg",
+    "image9.jpg",
+    "image10.jpg"
+];
+
+const texts = [
+    "Remember this day? 🥺",
+    "We were so happy here 💕",
+    "You can't say no to this 😌",
+    "Look at that smile ❤️",
+    "We belong together 💖",
+    "Perfect couple 😘",
+    "Still thinking no? 😏",
+    "This is destiny 💍",
+    "My heart says yes 💘",
+    "Now there is only one choice 😌"
+];
 
 yesBtn.addEventListener("click", function() {
     confetti({
@@ -201,28 +217,11 @@ noBtn.addEventListener("click", function() {
 
     if(noCount >= 10) return;
 
-    noCount++;
-
-    noBtn.classList.add("shake");
-    setTimeout(() => noBtn.classList.remove("shake"), 400);
-
-    const texts = [
-        "Remember this day? 🥺",
-        "We were so happy here 💕",
-        "You can't say no to this 😌",
-        "Look at that smile ❤️",
-        "We belong together 💖",
-        "Perfect couple 😘",
-        "Still thinking no? 😏",
-        "This is destiny 💍",
-        "My heart says yes 💘",
-        "Now there is only one choice 😌"
-    ];
-
-    message.innerHTML = texts[noCount - 1];
-
-    memoryImage.src = "photo" + noCount + ".jpg";
+    message.innerHTML = texts[noCount];
+    memoryImage.src = photos[noCount];
     memoryImage.style.display = "block";
+
+    noCount++;
 
     let size = 20 + noCount * 8;
     yesBtn.style.fontSize = size + "px";
@@ -233,7 +232,6 @@ noBtn.addEventListener("click", function() {
     }
 });
 
-// FLOATING HEARTS
 function createHeart() {
     const heart = document.createElement("div");
     heart.classList.add("heart");
