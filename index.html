@@ -13,24 +13,26 @@ body {
     font-family: Arial, sans-serif;
     text-align: center;
     background: linear-gradient(135deg, #ff758c, #ff7eb3);
-    overflow-x: hidden;
     color: white;
+    overflow-x: hidden;
 }
 
 .hidden { display: none; }
 
 .container {
-    margin-top: 60px;
     padding: 20px;
+    margin-top: 40px;
 }
 
 button {
-    padding: 15px 30px;
-    font-size: 20px;
+    padding: 18px 30px;
+    font-size: 18px;
     border: none;
     border-radius: 12px;
     cursor: pointer;
-    transition: 0.3s;
+    margin: 10px;
+    width: 80%;
+    max-width: 300px;
 }
 
 #yesBtn {
@@ -43,32 +45,26 @@ button {
     color: white;
 }
 
-#yesBtn:hover {
-    transform: scale(1.1);
-}
-
 input {
-    padding: 10px;
+    padding: 12px;
     border-radius: 10px;
     border: none;
+    width: 80%;
+    max-width: 300px;
 }
 
-@keyframes shake {
-    0% { transform: translateX(0); }
-    25% { transform: translateX(-10px); }
-    50% { transform: translateX(10px); }
-    75% { transform: translateX(-10px); }
-    100% { transform: translateX(0); }
-}
-
-.shake {
-    animation: shake 0.4s;
+img {
+    display: block;
+    margin: 20px auto;
+    width: 90%;
+    max-width: 320px;
+    border-radius: 20px;
 }
 
 .heart {
     position: fixed;
-    width: 20px;
-    height: 20px;
+    width: 15px;
+    height: 15px;
     background: red;
     transform: rotate(45deg);
     animation: float 6s infinite ease-in;
@@ -78,37 +74,54 @@ input {
 .heart:after {
     content: "";
     position: absolute;
-    width: 20px;
-    height: 20px;
+    width: 15px;
+    height: 15px;
     background: red;
     border-radius: 50%;
 }
 
-.heart:before { top: -10px; left: 0; }
-.heart:after { left: -10px; top: 0; }
+.heart:before { top: -8px; left: 0; }
+.heart:after { left: -8px; top: 0; }
 
 @keyframes float {
     0% { transform: translateY(100vh) rotate(45deg); opacity: 1; }
     100% { transform: translateY(-10vh) rotate(45deg); opacity: 0; }
 }
 
-img {
-    width: 280px;
-    border-radius: 20px;
-    margin-top: 20px;
-    max-width: 90%;
+/* MUSIC OVERLAY */
+#musicOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #000000dd;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    color: white;
+    font-size: 22px;
 }
 </style>
 </head>
 
 <body>
 
-<audio autoplay loop>
+<!-- MUSIC OVERLAY -->
+<div id="musicOverlay">
+    <div>
+        Tap Anywhere To Start The Magic 💖
+    </div>
+</div>
+
+<!-- AUDIO -->
+<audio id="bgMusic" loop>
     <source src="your-music.mp3" type="audio/mp3">
 </audio>
 
 <!-- PASSWORD PAGE -->
-<div id="passwordPage" class="container">
+<div id="passwordPage" class="container hidden">
     <h1>Heyyyy Piyuduuu!!! ❤️</h1>
     <p>Please Enter Password to see the MAGIC 💖</p>
     <input type="password" id="passwordInput" placeholder="Hint: Her Name 😉">
@@ -118,17 +131,12 @@ img {
 
 <!-- MAIN PAGE -->
 <div id="mainPage" class="hidden container">
-    <h1>Heyy Sweetie Piyu ❤️</h1>
-
-    <h2>Countdown to Valentine's Day</h2>
-    <div id="countdown" style="font-size:22px;"></div>
-
-    <h1>Will You Be My Valentine? 💘</h1>
+    <h2>Will You Be My Valentine? 💘</h2>
 
     <button id="yesBtn">YES 💖</button>
     <button id="noBtn">NO 🙈</button>
 
-    <div id="message" style="margin-top:20px;font-size:20px;"></div>
+    <div id="message" style="margin-top:20px;font-size:18px;"></div>
     <img id="memoryImage" style="display:none;">
 </div>
 
@@ -136,16 +144,24 @@ img {
 <div id="lovePage" class="hidden container">
     <h1>She Said YESSSS ❤️🔥</h1>
     <img src="your-photo.jpg">
-    <div style="font-size:18px;max-width:600px;margin:auto;">
+    <p style="font-size:18px;">
         Piyu ❤️<br><br>
         I promise to love you more every single day.<br>
         You are my happiness, my peace, my forever.<br><br>
         Happy Valentine's Day My Love 💕
-    </div>
+    </p>
 </div>
 
 <script>
 
+// START MUSIC ON FIRST TAP (MOBILE SAFE)
+document.getElementById("musicOverlay").addEventListener("click", function() {
+    document.getElementById("bgMusic").play();
+    this.style.display = "none";
+    document.getElementById("passwordPage").classList.remove("hidden");
+});
+
+// PASSWORD CHECK
 function checkPassword() {
     const password = document.getElementById("passwordInput").value;
     if(password.toLowerCase() === "piyu") {
@@ -156,20 +172,7 @@ function checkPassword() {
     }
 }
 
-function updateCountdown() {
-    const valentine = new Date("Feb 14, 2026 00:00:00").getTime();
-    const now = new Date().getTime();
-    const distance = valentine - now;
-
-    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-
-    document.getElementById("countdown").innerHTML =
-        days + "d " + hours + "h " + minutes + "m ";
-}
-setInterval(updateCountdown, 1000);
-
+// NO BUTTON LOGIC
 let noCount = 0;
 const yesBtn = document.getElementById("yesBtn");
 const noBtn = document.getElementById("noBtn");
@@ -202,19 +205,7 @@ const texts = [
     "Now there is only one choice 😌"
 ];
 
-yesBtn.addEventListener("click", function() {
-    confetti({
-        particleCount: 300,
-        spread: 120,
-        origin: { y: 0.6 }
-    });
-
-    document.getElementById("mainPage").classList.add("hidden");
-    document.getElementById("lovePage").classList.remove("hidden");
-});
-
 noBtn.addEventListener("click", function() {
-
     if(noCount >= 10) return;
 
     message.innerHTML = texts[noCount];
@@ -223,24 +214,31 @@ noBtn.addEventListener("click", function() {
 
     noCount++;
 
-    let size = 20 + noCount * 8;
-    yesBtn.style.fontSize = size + "px";
-    yesBtn.style.padding = (15 + noCount * 4) + "px";
-
     if(noCount === 10) {
         noBtn.style.display = "none";
     }
 });
 
+yesBtn.addEventListener("click", function() {
+    confetti({
+        particleCount: 250,
+        spread: 120,
+        origin: { y: 0.6 }
+    });
+
+    document.getElementById("mainPage").classList.add("hidden");
+    document.getElementById("lovePage").classList.remove("hidden");
+});
+
+// FLOATING HEARTS
 function createHeart() {
     const heart = document.createElement("div");
     heart.classList.add("heart");
     heart.style.left = Math.random() * 100 + "vw";
-    heart.style.animationDuration = (3 + Math.random() * 3) + "s";
     document.body.appendChild(heart);
     setTimeout(() => heart.remove(), 6000);
 }
-setInterval(createHeart, 300);
+setInterval(createHeart, 400);
 
 </script>
 
