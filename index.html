@@ -11,26 +11,29 @@
 body {
     margin: 0;
     font-family: Arial, sans-serif;
-    text-align: center;
     background: linear-gradient(135deg, #ff758c, #ff7eb3);
     color: white;
-    overflow-x: hidden;
+    text-align: center;
+}
+
+/* CENTER EVERYTHING */
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
 }
 
 .hidden { display: none; }
 
-.container {
-    padding: 20px;
-    margin-top: 40px;
-}
-
+/* BUTTONS */
 button {
-    padding: 18px 30px;
+    padding: 18px 25px;
     font-size: 18px;
     border: none;
     border-radius: 12px;
     cursor: pointer;
-    margin: 10px;
+    margin: 10px 0;
     width: 80%;
     max-width: 300px;
 }
@@ -45,14 +48,17 @@ button {
     color: white;
 }
 
+/* INPUT */
 input {
     padding: 12px;
     border-radius: 10px;
     border: none;
     width: 80%;
     max-width: 300px;
+    text-align: center;
 }
 
+/* PERFECTLY CENTERED IMAGES */
 img {
     display: block;
     margin: 20px auto;
@@ -61,6 +67,7 @@ img {
     border-radius: 20px;
 }
 
+/* FLOATING HEARTS */
 .heart {
     position: fixed;
     width: 15px;
@@ -88,7 +95,7 @@ img {
     100% { transform: translateY(-10vh) rotate(45deg); opacity: 0; }
 }
 
-/* MUSIC OVERLAY */
+/* MUSIC START SCREEN */
 #musicOverlay {
     position: fixed;
     top: 0;
@@ -99,9 +106,8 @@ img {
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 9999;
-    color: white;
     font-size: 22px;
+    z-index: 9999;
 }
 </style>
 </head>
@@ -110,9 +116,7 @@ img {
 
 <!-- MUSIC OVERLAY -->
 <div id="musicOverlay">
-    <div>
-        Tap Anywhere To Start The Magic 💖
-    </div>
+    Tap Anywhere To Start The Magic 💖
 </div>
 
 <!-- AUDIO -->
@@ -130,7 +134,7 @@ img {
 </div>
 
 <!-- MAIN PAGE -->
-<div id="mainPage" class="hidden container">
+<div id="mainPage" class="container hidden">
     <h2>Will You Be My Valentine? 💘</h2>
 
     <button id="yesBtn">YES 💖</button>
@@ -141,10 +145,10 @@ img {
 </div>
 
 <!-- LOVE PAGE -->
-<div id="lovePage" class="hidden container">
+<div id="lovePage" class="container hidden">
     <h1>She Said YESSSS ❤️🔥</h1>
     <img src="your-photo.jpg">
-    <p style="font-size:18px;">
+    <p style="font-size:18px;max-width:320px;">
         Piyu ❤️<br><br>
         I promise to love you more every single day.<br>
         You are my happiness, my peace, my forever.<br><br>
@@ -154,16 +158,17 @@ img {
 
 <script>
 
-// START MUSIC ON FIRST TAP (MOBILE SAFE)
+/* START MUSIC ON FIRST TAP (WORKS ON MOBILE) */
 document.getElementById("musicOverlay").addEventListener("click", function() {
     document.getElementById("bgMusic").play();
     this.style.display = "none";
     document.getElementById("passwordPage").classList.remove("hidden");
 });
 
-// PASSWORD CHECK
+/* PASSWORD CHECK */
 function checkPassword() {
     const password = document.getElementById("passwordInput").value;
+
     if(password.toLowerCase() === "piyu") {
         document.getElementById("passwordPage").classList.add("hidden");
         document.getElementById("mainPage").classList.remove("hidden");
@@ -172,7 +177,7 @@ function checkPassword() {
     }
 }
 
-// NO BUTTON LOGIC
+/* NO BUTTON LOGIC */
 let noCount = 0;
 const yesBtn = document.getElementById("yesBtn");
 const noBtn = document.getElementById("noBtn");
@@ -219,6 +224,7 @@ noBtn.addEventListener("click", function() {
     }
 });
 
+/* YES BUTTON */
 yesBtn.addEventListener("click", function() {
     confetti({
         particleCount: 250,
@@ -230,7 +236,7 @@ yesBtn.addEventListener("click", function() {
     document.getElementById("lovePage").classList.remove("hidden");
 });
 
-// FLOATING HEARTS
+/* FLOATING HEARTS */
 function createHeart() {
     const heart = document.createElement("div");
     heart.classList.add("heart");
